@@ -1,0 +1,12 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: create
+    generate-ddl: true
+    properties:
+      hibernate:
+        dialect: org.sqlite.hibernate.dialect.SQLiteDialect
+        show_sql: true
+  datasource:
+    url: jdbc:sqlite:book.sqlite
+    driverClassName: org.sqlite.JDBC
