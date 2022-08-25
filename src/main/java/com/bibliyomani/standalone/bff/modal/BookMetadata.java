@@ -25,7 +25,7 @@ import javax.persistence.Table;
 @RequiredArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Book {
+public class BookMetadata {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -33,10 +33,6 @@ public class Book {
     private Integer bookId;
 
     private String name;
-
     private String hash;
-
-    private byte[] content;
-
     private int last;
 }
