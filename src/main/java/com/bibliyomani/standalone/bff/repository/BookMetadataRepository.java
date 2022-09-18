@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface BookMetadataRepository extends JpaRepository<BookMetadata, Integer> {
+    BookMetadata findByHash(String hash);
 }
