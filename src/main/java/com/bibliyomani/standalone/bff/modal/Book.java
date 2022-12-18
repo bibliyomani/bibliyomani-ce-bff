@@ -39,4 +39,6 @@ public class Book {
     private byte[] content;
 
     private int last;
+
+    private int total;
 }

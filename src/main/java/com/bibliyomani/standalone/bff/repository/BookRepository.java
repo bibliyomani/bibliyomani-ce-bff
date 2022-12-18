@@ -11,7 +11,4 @@ import java.util.List;
 @Repository
 public interface BookRepository extends JpaRepository<Book, Integer> {
     Book findBookByHash(String hash);
-
-    @Query(value = "select book_id, name, hash, last from book", nativeQuery = true)
-    List<Book> listBooks();
 }
