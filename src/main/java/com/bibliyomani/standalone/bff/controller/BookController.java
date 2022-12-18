@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/book")
@@ -22,6 +23,11 @@ public class BookController {
 
     private final UploadService uploadService;
     private final BookService bookService;
+
+    @GetMapping("/all")
+    public List<Book> listBooks() throws SQLException {
+        return bookService.listAll();
+    }
 
     @GetMapping
     public ResponseEntity<InputStreamResource> fetchBook(@RequestParam String hash) throws SQLException {
@@ -37,9 +43,7 @@ public class BookController {
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public boolean uploadBook(@RequestParam(value = "books") MultipartFile[] books) throws IOException {
-        for (MultipartFile book : books) {
-            uploadService.uploadBook(book);
-        }
+        for (MultipartFile book : books) uploadService.uploadBook(book);
 
         return false;
     }
