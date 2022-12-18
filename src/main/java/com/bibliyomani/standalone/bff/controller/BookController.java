@@ -1,6 +1,7 @@
 package com.bibliyomani.standalone.bff.controller;
 
-import com.bibliyomani.standalone.bff.repository.jdbc.BookJdbcRepository;
+import com.bibliyomani.standalone.bff.modal.Book;
+import com.bibliyomani.standalone.bff.service.BookService;
 import com.bibliyomani.standalone.bff.service.UploadService;
 import lombok.AllArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
@@ -19,13 +20,13 @@ import java.sql.SQLException;
 @AllArgsConstructor
 public class BookController {
 
-    private final BookJdbcRepository bookJdbcRepository;
     private final UploadService uploadService;
+    private final BookService bookService;
 
     @GetMapping
     public ResponseEntity<InputStreamResource> fetchBook(@RequestParam String hash) throws SQLException {
-        final byte[] contentByHash = bookJdbcRepository.findContentByHash(hash);
-        final ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(contentByHash);
+        final Book book = bookService.fetchBook(hash);
+        final ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(book.getContent());
 
         return ResponseEntity
                 .ok()
@@ -35,7 +36,11 @@ public class BookController {
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public boolean uploadBook(@RequestParam MultipartFile file) throws IOException {
-        return uploadService.uploadBook(file);
+    public boolean uploadBook(@RequestParam(value = "books") MultipartFile[] books) throws IOException {
+        for (MultipartFile book : books) {
+            uploadService.uploadBook(book);
+        }
+
+        return false;
     }
 }
