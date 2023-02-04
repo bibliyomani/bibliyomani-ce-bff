@@ -44,7 +44,6 @@ public class BookController {
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public boolean uploadBook(@RequestParam(value = "books") MultipartFile[] books) throws IOException {
         for (MultipartFile book : books) uploadService.uploadBook(book);
-
         return false;
     }
 }

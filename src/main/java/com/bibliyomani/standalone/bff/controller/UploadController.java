@@ -12,7 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 @RestController
-@RequestMapping("/book-upload")
+@RequestMapping("/upload")
 @AllArgsConstructor
 public class UploadController {
 
