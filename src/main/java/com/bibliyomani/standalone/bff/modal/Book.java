@@ -41,4 +41,7 @@ public class Book {
     private int last;
 
     private int total;
+
+    @Column(length = 8)
+    private String size;
 }
