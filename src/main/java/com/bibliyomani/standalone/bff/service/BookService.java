@@ -16,18 +16,6 @@ public class BookService {
     private final BookRepository bookRepository;
     private final NativeBookRepository nativeBookRepository;
 
-    public void uploadBook(Book book) {
-        bookRepository.save(book);
-    }
-
-    public Book fetchBook(String hash) {
-        return bookRepository.findBookByHash(hash);
-    }
-
-    public List<Book> listAll() throws SQLException {
-        return nativeBookRepository.listBooksWithoutContent();
-    }
-
     public long updateLastInteraction(Integer bookId, long lastInteraction) {
         final Book bookByBookId = bookRepository.findBookByBookId(bookId);
         bookByBookId.setLastInteraction(lastInteraction);

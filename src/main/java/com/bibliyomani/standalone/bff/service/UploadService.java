@@ -18,25 +18,33 @@ public class UploadService {
 
     private final BookRepository bookRepository;
     private final EncodingFactory encodingFactory;
+    private final CompressionService compressionService;
 
     public boolean uploadBook(final MultipartFile file) throws IOException {
         final byte[] content = file.getBytes();
+        final int decompressedSize = content.length;
+        final Object[] pair = compressionService.compress(content, decompressedSize);
+        final byte[] compressed = (byte[]) pair[0];
+        final int compressedSize = (int) pair[1];
+
         final PDDocument doc = PDDocument.load(content);
         final int total = doc.getNumberOfPages();
 
         final String originalFilename = file.getOriginalFilename();
         final String hash = encodingFactory.valueOf(originalFilename);
-        final String size = humanReadableByteCountSI(content.length);
+        final String size = humanReadableByteCountSI(compressedSize);
         final long unixTimestamp = System.currentTimeMillis();
 
         final Book book = Book.builder()
                 .name(originalFilename)
                 .hash(hash)
-                .content(content)
+                .content(compressed)
                 .total(total)
-                .last(0)
+                .read(0)
                 .size(size)
                 .lastInteraction(unixTimestamp)
+                .decompressedSize(decompressedSize)
+                .compressedSize(compressedSize)
                 .build();
 
         return bookRepository.save(book) != null;

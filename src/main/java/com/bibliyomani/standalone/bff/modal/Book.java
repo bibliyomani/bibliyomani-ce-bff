@@ -38,12 +38,18 @@ public class Book {
 
     private byte[] content;
 
-    private int last;
+    private int read;
 
     private int total;
 
     @Column(length = 8)
     private String size;
+
+    @Column(name = "decompressed_size")
+    private int decompressedSize;
+
+    @Column(name = "compressed_size")
+    private int compressedSize;
 
     @Column(name = "last_interaction")
     private long lastInteraction;
