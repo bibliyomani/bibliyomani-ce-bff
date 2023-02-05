@@ -1,7 +1,9 @@
 package com.bibliyomani.standalone.bff.controller;
 
 import com.bibliyomani.standalone.bff.modal.Book;
+import com.bibliyomani.standalone.bff.repository.BookRepository;
 import com.bibliyomani.standalone.bff.service.BookService;
+import com.bibliyomani.standalone.bff.service.CompressionService;
 import com.bibliyomani.standalone.bff.service.UploadService;
 import lombok.AllArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
@@ -28,11 +30,18 @@ public class BookController {
 
     private final UploadService uploadService;
     private final BookService bookService;
+    private final CompressionService compressionService;
+    private final BookRepository bookRepository;
 
-    @GetMapping
-    public ResponseEntity<InputStreamResource> fetchBook(@RequestParam String hash) throws SQLException {
-        final Book book = bookService.fetchBook(hash);
-        final ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(book.getContent());
+    @GetMapping("/{bookId}")
+    public ResponseEntity<InputStreamResource> fetchBook(@PathVariable Integer bookId) throws SQLException {
+        final Book book = bookRepository.findBookByBookId(bookId);
+        final byte[] compressed = book.getContent();
+        final int decompressedSize = book.getDecompressedSize();
+        final int compressedSize = book.getCompressedSize();
+        final byte[] decompressed = compressionService.decompress(compressed, decompressedSize, compressedSize);
+
+        final ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(decompressed);
 
         return ResponseEntity
                 .ok()

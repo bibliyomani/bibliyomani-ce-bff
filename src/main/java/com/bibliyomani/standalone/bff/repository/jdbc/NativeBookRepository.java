@@ -14,7 +14,7 @@ import java.util.List;
 public class NativeBookRepository {
 
     private final DataSource dataSource;
-    private final static String QUERY = "select book_id, name, hash, last, total from book";
+    private final static String QUERY = "select book_id, name, hash, read, total from book";
 
     public List<Book> listBooksWithoutContent() throws SQLException {
         final List<Book> books = new ArrayList<>();
@@ -34,7 +34,7 @@ public class NativeBookRepository {
                             .bookId(rs.getInt(1))
                             .name(rs.getString(2))
                             .hash(rs.getString(3))
-                            .last(rs.getInt(4))
+                            .read(rs.getInt(4))
                             .total(rs.getInt(5))
                             .build();
                     books.add(book);

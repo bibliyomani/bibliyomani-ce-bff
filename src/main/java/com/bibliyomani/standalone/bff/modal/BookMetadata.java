@@ -11,7 +11,7 @@ public class BookMetadata {
     private Integer bookId;
     private String name;
     private String hash;
-    private int last;
+    private int read;
     private int total;
     private String size;
     private long lastInteraction;

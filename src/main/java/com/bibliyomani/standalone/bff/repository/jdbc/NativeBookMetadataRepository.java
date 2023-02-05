@@ -17,8 +17,8 @@ import java.util.List;
 public class NativeBookMetadataRepository {
 
     private final DataSource dataSource;
-    private final static String QUERY = "select book_id, name, hash, last, total, size, last_interaction from book";
-    private final static String FIND_SPECIFIC_METADATA_QUERY = "select book_id, name, hash, last, total, size, last_interaction from book where book_id = ?";
+    private final static String QUERY = "select book_id, name, hash, read, total, size, last_interaction from book";
+    private final static String FIND_SPECIFIC_METADATA_QUERY = "select book_id, name, hash, read, total, size, last_interaction from book where book_id = ?";
 
     public List<BookMetadata> listMetadata() throws SQLException {
         final List<BookMetadata> metadataList = new ArrayList<>();
@@ -37,7 +37,7 @@ public class NativeBookMetadataRepository {
                             .bookId(rs.getInt(1))
                             .name(rs.getString(2))
                             .hash(rs.getString(3))
-                            .last(rs.getInt(4))
+                            .read(rs.getInt(4))
                             .total(rs.getInt(5))
                             .size(rs.getString(6))
                             .lastInteraction(rs.getLong(7))
@@ -75,7 +75,7 @@ public class NativeBookMetadataRepository {
                             .bookId(rs.getInt(1))
                             .name(rs.getString(2))
                             .hash(rs.getString(3))
-                            .last(rs.getInt(4))
+                            .read(rs.getInt(4))
                             .total(rs.getInt(5))
                             .size(rs.getString(6))
                             .lastInteraction(rs.getLong(7))
