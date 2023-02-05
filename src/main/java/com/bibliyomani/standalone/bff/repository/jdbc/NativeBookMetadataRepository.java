@@ -1,6 +1,5 @@
 package com.bibliyomani.standalone.bff.repository.jdbc;
 
-import com.bibliyomani.standalone.bff.modal.Book;
 import com.bibliyomani.standalone.bff.modal.BookMetadata;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -18,8 +17,8 @@ import java.util.List;
 public class NativeBookMetadataRepository {
 
     private final DataSource dataSource;
-    private final static String QUERY = "select book_id, name, hash, last, total, size from book";
-    private final static String FIND_SPECIFIC_METADATA_QUERY = "select book_id, name, hash, last, total, size from book where book_id = ?";
+    private final static String QUERY = "select book_id, name, hash, last, total, size, last_interaction from book";
+    private final static String FIND_SPECIFIC_METADATA_QUERY = "select book_id, name, hash, last, total, size, last_interaction from book where book_id = ?";
 
     public List<BookMetadata> listMetadata() throws SQLException {
         final List<BookMetadata> metadataList = new ArrayList<>();
@@ -41,6 +40,7 @@ public class NativeBookMetadataRepository {
                             .last(rs.getInt(4))
                             .total(rs.getInt(5))
                             .size(rs.getString(6))
+                            .lastInteraction(rs.getLong(7))
                             .build();
                     metadataList.add(bookMetadata);
                 }
@@ -78,6 +78,7 @@ public class NativeBookMetadataRepository {
                             .last(rs.getInt(4))
                             .total(rs.getInt(5))
                             .size(rs.getString(6))
+                            .lastInteraction(rs.getLong(7))
                             .build();
                 }
 

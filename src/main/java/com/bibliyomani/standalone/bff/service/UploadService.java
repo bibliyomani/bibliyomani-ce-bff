@@ -19,7 +19,7 @@ public class UploadService {
     private final BookRepository bookRepository;
     private final EncodingFactory encodingFactory;
 
-    public boolean uploadBook(MultipartFile file) throws IOException {
+    public boolean uploadBook(final MultipartFile file) throws IOException {
         final byte[] content = file.getBytes();
         final PDDocument doc = PDDocument.load(content);
         final int total = doc.getNumberOfPages();
@@ -27,6 +27,7 @@ public class UploadService {
         final String originalFilename = file.getOriginalFilename();
         final String hash = encodingFactory.valueOf(originalFilename);
         final String size = humanReadableByteCountSI(content.length);
+        final long unixTimestamp = System.currentTimeMillis();
 
         final Book book = Book.builder()
                 .name(originalFilename)
@@ -35,6 +36,7 @@ public class UploadService {
                 .total(total)
                 .last(0)
                 .size(size)
+                .lastInteraction(unixTimestamp)
                 .build();
 
         return bookRepository.save(book) != null;
@@ -44,7 +46,7 @@ public class UploadService {
         if (-1000 < bytes && bytes < 1000) {
             return bytes + " B";
         }
-        CharacterIterator ci = new StringCharacterIterator("kMGTPE");
+        final CharacterIterator ci = new StringCharacterIterator("kMGTPE");
         while (bytes <= -999_950 || bytes >= 999_950) {
             bytes /= 1000;
             ci.next();

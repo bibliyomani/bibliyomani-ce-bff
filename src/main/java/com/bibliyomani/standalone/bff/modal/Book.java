@@ -44,4 +44,7 @@ public class Book {
 
     @Column(length = 8)
     private String size;
+
+    @Column(name = "last_interaction")
+    private long lastInteraction;
 }

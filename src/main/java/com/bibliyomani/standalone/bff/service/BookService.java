@@ -27,4 +27,12 @@ public class BookService {
     public List<Book> listAll() throws SQLException {
         return nativeBookRepository.listBooksWithoutContent();
     }
+
+    public long updateLastInteraction(Integer bookId, long lastInteraction) {
+        final Book bookByBookId = bookRepository.findBookByBookId(bookId);
+        bookByBookId.setLastInteraction(lastInteraction);
+
+        final Book saved = bookRepository.save(bookByBookId);
+        return saved.getLastInteraction();
+    }
 }
