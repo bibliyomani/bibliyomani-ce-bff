@@ -8,13 +8,18 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.List;
 
 @RestController
 @RequestMapping("/book")
@@ -23,11 +28,6 @@ public class BookController {
 
     private final UploadService uploadService;
     private final BookService bookService;
-
-    @GetMapping("/all")
-    public List<Book> listBooks() throws SQLException {
-        return bookService.listAll();
-    }
 
     @GetMapping
     public ResponseEntity<InputStreamResource> fetchBook(@RequestParam String hash) throws SQLException {
@@ -45,5 +45,10 @@ public class BookController {
     public boolean uploadBook(@RequestParam(value = "books") MultipartFile[] books) throws IOException {
         for (MultipartFile book : books) uploadService.uploadBook(book);
         return false;
+    }
+
+    @PatchMapping("/{bookId}")
+    public long updateLastInteraction(@PathVariable Integer bookId, @RequestParam Integer lastInteraction) {
+        return bookService.updateLastInteraction(bookId, lastInteraction);
     }
 }

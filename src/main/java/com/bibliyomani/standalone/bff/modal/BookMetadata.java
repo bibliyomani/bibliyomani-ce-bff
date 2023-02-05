@@ -2,7 +2,6 @@ package com.bibliyomani.standalone.bff.modal;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
@@ -15,4 +14,5 @@ public class BookMetadata {
     private int last;
     private int total;
     private String size;
+    private long lastInteraction;
 }
