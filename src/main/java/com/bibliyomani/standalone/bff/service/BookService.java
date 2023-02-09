@@ -6,9 +6,6 @@ import com.bibliyomani.standalone.bff.repository.jdbc.NativeBookRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLException;
-import java.util.List;
-
 @Service
 @AllArgsConstructor
 public class BookService {
@@ -16,11 +13,24 @@ public class BookService {
     private final BookRepository bookRepository;
     private final NativeBookRepository nativeBookRepository;
 
-    public long updateLastInteraction(Integer bookId, long lastInteraction) {
+    public long updateLastInteraction(Integer bookId) {
         final Book bookByBookId = bookRepository.findBookByBookId(bookId);
+        final long lastInteraction = System.currentTimeMillis();
         bookByBookId.setLastInteraction(lastInteraction);
 
         final Book saved = bookRepository.save(bookByBookId);
         return saved.getLastInteraction();
+    }
+
+    public void updateLastRead(final Integer bookId,
+                               final Integer lastRead) {
+        final Book bookByBookId = bookRepository.findBookByBookId(bookId);
+        final int read = bookByBookId.getRead();
+
+        if (lastRead > read) {
+            bookByBookId.setRead(lastRead);
+            bookRepository.save(bookByBookId);
+        }
+
     }
 }

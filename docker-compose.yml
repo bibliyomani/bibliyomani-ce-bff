@@ -1,0 +1,20 @@
+version: "3"
+
+services:
+  bff:
+    container_name: bibliyomani-bff
+    image: bibliyomani-standalone-bff
+    restart: always
+    ports:
+      - 8090:8080
+    volumes:
+      - ./book.sqlite:/book.sqlite
+
+  ui:
+    container_name: bibliyomani-ui
+    image: bibliyomani-ui
+    restart: always
+    ports:
+      - 8091:80
+    depends_on:
+      - bff

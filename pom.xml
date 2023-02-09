@@ -97,6 +97,27 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+
+            <plugin>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>jib-maven-plugin</artifactId>
+                <version>3.1.4</version>
+
+                <configuration>
+                    <from>
+                        <image>
+                            enesusta/openjdk11-openj9:x86_64-alpine-jdk-11.0.15_10_openj9-0.32.0_mvnd-0.7.1_otel-1.19.1
+                        </image>
+                    </from>
+                    <to>
+                        <image>bibliyomani-standalone-bff</image>
+                    </to>
+                    <container>
+                        <ports>8080</ports>
+                        <mainClass>com.bibliyomani.standalone.bff.BibliyomaniBffApplication</mainClass>
+                   </container>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 

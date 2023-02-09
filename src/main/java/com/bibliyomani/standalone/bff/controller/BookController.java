@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -57,7 +58,13 @@ public class BookController {
     }
 
     @PatchMapping("/{bookId}")
-    public long updateLastInteraction(@PathVariable Integer bookId, @RequestParam Integer lastInteraction) {
-        return bookService.updateLastInteraction(bookId, lastInteraction);
+    public long updateLastInteraction(@PathVariable Integer bookId) {
+        return bookService.updateLastInteraction(bookId);
+    }
+
+    @PutMapping("/{bookId}")
+    public void updateLastReadBook(@PathVariable Integer bookId,
+                                   @RequestParam Integer lastRead) {
+        bookService.updateLastRead(bookId, lastRead);
     }
 }
