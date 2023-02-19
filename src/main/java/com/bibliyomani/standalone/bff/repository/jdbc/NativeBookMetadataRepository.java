@@ -60,17 +60,13 @@ public class NativeBookMetadataRepository {
         final BookMetadata.BookMetadataBuilder builder = BookMetadata.builder();
 
         try (final Connection connection = dataSource.getConnection()) {
-            connection.setReadOnly(true);
-            try (final PreparedStatement preparedStatement = connection.prepareStatement(FIND_SPECIFIC_METADATA_QUERY,
-                    ResultSet.TYPE_FORWARD_ONLY,
-                    ResultSet.CONCUR_READ_ONLY,
-                    ResultSet.CLOSE_CURSORS_AT_COMMIT)) {
+            try (final PreparedStatement preparedStatement = connection.prepareStatement(FIND_SPECIFIC_METADATA_QUERY)) {
                 preparedStatement.setInt(1, bookId);
 
                 final ResultSet rs = preparedStatement.executeQuery();
                 rs.setFetchSize(1);
 
-                if (rs.first()) {
+                if (rs.next()) {
                     builder
                             .bookId(rs.getInt(1))
                             .name(rs.getString(2))
