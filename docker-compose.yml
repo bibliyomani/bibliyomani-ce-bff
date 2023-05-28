@@ -3,7 +3,7 @@ version: "3.1"
 services:
   bff:
     container_name: bibliyomani-bff
-    image: bibliyomani-standalone-bff
+    image: bibliyomani-standalone-bff:20032023
     restart: always
     ports:
       - 8090:8080

@@ -6,6 +6,7 @@ import com.bibliyomani.standalone.bff.service.BookService;
 import com.bibliyomani.standalone.bff.service.CompressionService;
 import com.bibliyomani.standalone.bff.service.UploadService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -22,11 +23,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.sql.SQLException;
 
 @RestController
 @RequestMapping("/book")
 @AllArgsConstructor
+@Slf4j
 public class BookController {
 
     private final UploadService uploadService;
@@ -35,7 +36,7 @@ public class BookController {
     private final BookRepository bookRepository;
 
     @GetMapping("/{bookId}")
-    public ResponseEntity<InputStreamResource> fetchBook(@PathVariable Integer bookId) throws SQLException {
+    public ResponseEntity<InputStreamResource> fetchBook(@PathVariable Integer bookId) {
         final Book book = bookRepository.findBookByBookId(bookId);
         final byte[] compressed = book.getContent();
         final int decompressedSize = book.getDecompressedSize();
@@ -54,6 +55,7 @@ public class BookController {
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public boolean uploadBook(@RequestParam(value = "books") MultipartFile[] books) throws IOException {
         for (MultipartFile book : books) uploadService.uploadBook(book);
+        log.info("upload has done");
         return false;
     }
 
