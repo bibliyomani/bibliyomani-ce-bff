@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-public class BookMetadata {
+public class BookMetadata implements Comparable<BookMetadata> {
     private Integer bookId;
     private String name;
     private String hash;
@@ -15,4 +15,11 @@ public class BookMetadata {
     private int total;
     private String size;
     private long lastInteraction;
+
+    @Override
+    public int compareTo(BookMetadata o) {
+        if (lastInteraction == o.lastInteraction) return 0;
+        else if (lastInteraction < o.lastInteraction) return 1;
+        else return -1;
+    }
 }
