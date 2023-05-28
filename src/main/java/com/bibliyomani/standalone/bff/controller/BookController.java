@@ -11,6 +11,8 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -68,5 +70,11 @@ public class BookController {
     public void updateLastReadBook(@PathVariable Integer bookId,
                                    @RequestParam Integer lastRead) {
         bookService.updateLastRead(bookId, lastRead);
+    }
+
+    @DeleteMapping("/{bookId}")
+    @Transactional
+    public long deleteBook(@PathVariable Integer bookId) {
+        return bookRepository.deleteByBookId(bookId);
     }
 }

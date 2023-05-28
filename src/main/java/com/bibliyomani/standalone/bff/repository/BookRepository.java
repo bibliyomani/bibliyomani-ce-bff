@@ -9,4 +9,6 @@ import org.springframework.stereotype.Repository;
 public interface BookRepository extends JpaRepository<Book, Integer> {
     Book findBookByHash(String hash);
     Book findBookByBookId(Integer bookId);
+
+    long deleteByBookId(int bookId);
 }
